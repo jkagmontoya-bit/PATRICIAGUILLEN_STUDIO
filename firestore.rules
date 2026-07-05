@@ -1,0 +1,38 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isUserInOrg(organizationId) {
+      return isAuthenticated() && 
+        exists(/databases/$(database)/documents/organizations/$(organizationId)/users/$(request.auth.uid));
+    }
+    
+    function hasRole(organizationId, role) {
+      return isAuthenticated() && 
+        get(/databases/$(database)/documents/organizations/$(organizationId)/users/$(request.auth.uid)).data.role == role;
+    }
+
+    // Organizations collection
+    match /organizations/{organizationId} {
+      allow read: if isUserInOrg(organizationId) || hasRole(organizationId, 'SuperAdmin');
+      allow write: if false; // All organization creation/modifications must go through Cloud Functions
+      
+      // Configuration Domain Rules
+      match /configuration/{workspaceId} {
+        allow read: if isUserInOrg(organizationId);
+        allow write: if false; // Protected. Changes must go through Cloud Functions API.
+      }
+      
+      // Customers Domain Rules
+      match /customers/{customerId} {
+        allow read: if isUserInOrg(organizationId);
+        allow write: if false; // Writing customers must be validated via Backend API
+      }
+    }
+  }
+}

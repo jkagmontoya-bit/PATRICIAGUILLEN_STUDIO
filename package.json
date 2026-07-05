@@ -1,0 +1,22 @@
+{
+  "name": "patriciaguillenvaler-studio-platform",
+  "version": "1.0.0",
+  "private": true,
+  "description": "SaaS Platform for Skincare Center - Patricia Guillen Valer Studio",
+  "scripts": {
+    "dev": "npm run dev --workspaces --if-present",
+    "build": "npm run build --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*",
+    "functions"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3"
+  }
+}

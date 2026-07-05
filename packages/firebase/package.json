@@ -1,0 +1,19 @@
+{
+  "name": "@studio/firebase",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w"
+  },
+  "dependencies": {
+    "@studio/shared": "*"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3",
+    "firebase-admin": "^12.0.0"
+  }
+}
